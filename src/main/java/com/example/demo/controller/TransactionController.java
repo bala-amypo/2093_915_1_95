@@ -4,11 +4,8 @@ import com.example.demo.model.TransactionLog;
 import com.example.demo.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/transactions")
+@RequestMapping("/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -17,20 +14,11 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping
-    public TransactionLog add(@RequestBody TransactionLog transaction) {
-        return transactionService.addTransaction(transaction);
-    }
+    @PostMapping("/{userId}")
+    public TransactionLog addTransaction(
+            @PathVariable Long userId,
+            @RequestBody TransactionLog transactionLog) {
 
-    @GetMapping
-    public List<TransactionLog> getAll() {
-        return transactionService.getAllTransactions();
-    }
-
-    @GetMapping("/filter")
-    public List<TransactionLog> filter(
-            @RequestParam LocalDate start,
-            @RequestParam LocalDate end) {
-        return transactionService.getTransactionsBetween(start, end);
+        return transactionService.addTransaction(userId, transactionLog);
     }
 }

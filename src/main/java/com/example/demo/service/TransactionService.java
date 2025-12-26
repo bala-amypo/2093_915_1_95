@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.model.TransactionLog;
-
-import java.time.LocalDate;
 import java.util.List;
+import java.time.LocalDate;
 
 public interface TransactionService {
 
@@ -11,5 +10,5 @@ public interface TransactionService {
 
     List<TransactionLog> getAllTransactions();
 
-    List<TransactionLog> getTransactionsBetween(LocalDate startDate, LocalDate endDate);
+    List<TransactionLog> getTransactionsBetween(LocalDate start, LocalDate end);
 }
