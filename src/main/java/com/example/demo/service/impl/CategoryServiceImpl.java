@@ -1,0 +1,31 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.Category;
+import com.example.demo.repository.CategoryRepository;
+import com.example.demo.service.CategoryService;
+
+import java.util.List;
+
+public class CategoryServiceImpl implements CategoryService {
+
+    private final CategoryRepository categoryRepository;
+
+    public CategoryServiceImpl(CategoryRepository repo) {
+        this.categoryRepository = repo;
+    }
+
+    @Override
+    public Category addCategory(Category category) {
+        if (categoryRepository.existsByName(category.getName())) {
+            throw new BadRequestException("Category exists");
+        }
+        category.validateType();
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+}
