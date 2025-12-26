@@ -16,9 +16,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionLog addTransaction(TransactionLog log) {
-        log.validate();
-        return repository.save(log);
+    public TransactionLog addTransaction(Long userId, TransactionLog transactionLog) {
+        transactionLog.setUserId(userId);
+        return repository.save(transactionLog);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionLog> getTransactionsBetween(LocalDate start, LocalDate end) {
-        return repository.findByTransactionDateBetween(start, end);
+    public List<TransactionLog> getTransactionsBetween(LocalDate startDate, LocalDate endDate) {
+        return repository.findByTransactionDateBetween(startDate, endDate);
     }
 }

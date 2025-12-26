@@ -4,7 +4,7 @@ import com.example.demo.model.BudgetPlan;
 
 public interface BudgetPlanService {
 
-    BudgetPlan createOrUpdate(BudgetPlan plan);
+    BudgetPlan createOrUpdate(BudgetPlan budgetPlan);
 
     BudgetPlan getPlan(int month, int year);
 }
