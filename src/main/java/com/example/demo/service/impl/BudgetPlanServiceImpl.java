@@ -9,22 +9,25 @@ import com.example.demo.service.BudgetPlanService;
 
 public class BudgetPlanServiceImpl implements BudgetPlanService {
 
-    private final BudgetPlanRepository repo;
-    private final UserRepository userRepo;
+    private final BudgetPlanRepository budgetPlanRepository;
+    private final UserRepository userRepository;
 
-    public BudgetPlanServiceImpl(BudgetPlanRepository r, UserRepository u) {
-        this.repo = r;
-        this.userRepo = u;
+    public BudgetPlanServiceImpl(BudgetPlanRepository repo, UserRepository userRepo) {
+        this.budgetPlanRepository = repo;
+        this.userRepository = userRepo;
     }
 
     @Override
     public BudgetPlan createBudgetPlan(Long userId, BudgetPlan plan) {
-        User user = userRepo.findById(userId).orElseThrow();
-        if (repo.findByUserAndMonthAndYear(user, plan.getMonth(), plan.getYear()).isPresent()) {
-            throw new BadRequestException("Budget plan exists");
-        }
+        User user = userRepository.findById(userId).orElseThrow();
         plan.validate();
-        plan.setUser(user);
-        return repo.save(plan);
+
+        if (budgetPlanRepository
+                .findByUserAndMonthAndYear(user, plan.getMonth(), 2025)
+                .isPresent()) {
+            throw new BadRequestException("Budget plan already exists");
+        }
+
+        return budgetPlanRepository.save(plan);
     }
 }
