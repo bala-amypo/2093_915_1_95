@@ -1,11 +1,16 @@
 package com.example.demo.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class RegisterRequest {
+
     private String name;
     private String email;
     private String password;
