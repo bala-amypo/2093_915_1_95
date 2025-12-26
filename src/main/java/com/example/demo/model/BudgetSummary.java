@@ -1,14 +1,11 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "budget_summaries")
 public class BudgetSummary {
 
     public static final String STATUS_UNDER_LIMIT = "UNDER_LIMIT";
@@ -24,10 +21,41 @@ public class BudgetSummary {
     private Double totalIncome;
     private Double totalExpense;
     private String status;
+
     private LocalDateTime generatedAt;
+
+    public BudgetSummary() {}
+
+    public BudgetSummary(Long id, BudgetPlan plan, Double income,
+                         Double expense, String status, LocalDateTime time) {
+        this.id = id;
+        this.budgetPlan = plan;
+        this.totalIncome = income;
+        this.totalExpense = expense;
+        this.status = status;
+        this.generatedAt = time;
+    }
 
     @PrePersist
     public void onCreate() {
-        generatedAt = LocalDateTime.now();
+        this.generatedAt = LocalDateTime.now();
     }
+
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public BudgetPlan getBudgetPlan() { return budgetPlan; }
+    public void setBudgetPlan(BudgetPlan budgetPlan) { this.budgetPlan = budgetPlan; }
+
+    public Double getTotalIncome() { return totalIncome; }
+    public void setTotalIncome(Double totalIncome) { this.totalIncome = totalIncome; }
+
+    public Double getTotalExpense() { return totalExpense; }
+    public void setTotalExpense(Double totalExpense) { this.totalExpense = totalExpense; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public LocalDateTime getGeneratedAt() { return generatedAt; }
 }

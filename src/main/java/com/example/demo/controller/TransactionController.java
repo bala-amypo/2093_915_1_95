@@ -2,28 +2,35 @@ package com.example.demo.controller;
 
 import com.example.demo.model.TransactionLog;
 import com.example.demo.service.TransactionService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/api/transactions")
 public class TransactionController {
+
     private final TransactionService transactionService;
-    
+
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
-    
-    @PostMapping("/{userId}")
-    public ResponseEntity<TransactionLog> addTransaction(@PathVariable Long userId, @RequestBody TransactionLog transaction) {
-        TransactionLog savedTransaction = transactionService.addTransaction(userId, transaction);
-        return ResponseEntity.ok(savedTransaction);
+
+    @PostMapping
+    public TransactionLog add(@RequestBody TransactionLog transaction) {
+        return transactionService.addTransaction(transaction);
     }
-    
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<TransactionLog>> getUserTransactions(@PathVariable Long userId) {
-        List<TransactionLog> transactions = transactionService.getUserTransactions(userId);
-        return ResponseEntity.ok(transactions);
+
+    @GetMapping
+    public List<TransactionLog> getAll() {
+        return transactionService.getAllTransactions();
+    }
+
+    @GetMapping("/filter")
+    public List<TransactionLog> filter(
+            @RequestParam LocalDate start,
+            @RequestParam LocalDate end) {
+        return transactionService.getTransactionsBetween(start, end);
     }
 }

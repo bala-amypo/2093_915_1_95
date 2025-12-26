@@ -2,14 +2,11 @@ package com.example.demo.model;
 
 import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Getter @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "transactions")
 public class TransactionLog {
 
     @Id
@@ -23,14 +20,50 @@ public class TransactionLog {
     private Category category;
 
     private Double amount;
+
     private String description;
+
     private LocalDate transactionDate;
 
-    public void validate() {
-        if (amount == null || amount <= 0)
-            throw new BadRequestException("Amount must be positive");
+    public TransactionLog() {}
 
-        if (transactionDate.isAfter(LocalDate.now()))
+    public TransactionLog(Long id, User user, Category category,
+                          Double amount, String description, LocalDate date) {
+        this.id = id;
+        this.user = user;
+        this.category = category;
+        this.amount = amount;
+        this.description = description;
+        this.transactionDate = date;
+    }
+
+    public void validate() {
+        if (amount == null || amount <= 0) {
+            throw new BadRequestException("Amount must be positive");
+        }
+        if (transactionDate.isAfter(LocalDate.now())) {
             throw new BadRequestException("Future date not allowed");
+        }
+    }
+
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
+
+    public Double getAmount() { return amount; }
+    public void setAmount(Double amount) { this.amount = amount; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public LocalDate getTransactionDate() { return transactionDate; }
+    public void setTransactionDate(LocalDate transactionDate) {
+        this.transactionDate = transactionDate;
     }
 }
