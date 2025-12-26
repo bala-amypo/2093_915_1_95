@@ -1,33 +1,33 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.TransactionLog;
-import com.example.demo.model.User;
 import com.example.demo.repository.TransactionLogRepository;
-import com.example.demo.repository.UserRepository;
 import com.example.demo.service.TransactionService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionLogRepository transactionRepo;
-    private final UserRepository userRepository;
+    private final TransactionLogRepository repository;
 
-    public TransactionServiceImpl(TransactionLogRepository repo, UserRepository userRepo) {
-        this.transactionRepo = repo;
-        this.userRepository = userRepo;
+    public TransactionServiceImpl(TransactionLogRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public TransactionLog addTransaction(Long userId, TransactionLog log) {
-        User user = userRepository.findById(userId).orElseThrow();
+    public TransactionLog addTransaction(TransactionLog log) {
         log.validate();
-        return transactionRepo.save(log);
+        return repository.save(log);
     }
 
     @Override
-    public List<TransactionLog> getUserTransactions(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        return transactionRepo.findByUser(user);
+    public List<TransactionLog> getAllTransactions() {
+        return repository.findAll();
+    }
+
+    @Override
+    public List<TransactionLog> getTransactionsBetween(LocalDate start, LocalDate end) {
+        return repository.findByTransactionDateBetween(start, end);
     }
 }
