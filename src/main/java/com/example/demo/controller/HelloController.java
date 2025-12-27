@@ -1,20 +1,20 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.BudgetSummaryService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class BudgetSummaryController {
+@RequestMapping("/api")
+public class HelloController {
 
-    private final BudgetSummaryService budgetSummaryService;
-
-    public BudgetSummaryController(BudgetSummaryService service) {
-        this.budgetSummaryService = service;
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello from Spring Boot REST API";
     }
 
-    @GetMapping("/summary")
-    public String summary() {
-        return budgetSummaryService.getSummary();
+    @GetMapping("/health")
+    public String health() {
+        return "OK";
     }
 }

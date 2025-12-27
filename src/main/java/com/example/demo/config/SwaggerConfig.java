@@ -12,8 +12,8 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Expense Tracker API")
+                        .title("Personal Finance Budget Planner API")
                         .version("1.0")
-                        .description("API Documentation"));
+                        .description("API for managing personal finances and budgets"));
     }
 }
