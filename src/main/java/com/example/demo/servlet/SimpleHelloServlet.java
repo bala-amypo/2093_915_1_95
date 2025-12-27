@@ -1,16 +1,22 @@
 package com.example.demo.servlet;
 
-import jakarta.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class SimpleHelloServlet extends HttpServlet {
-
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        resp.setContentType("text/plain");
-        resp.getWriter().write("Hello from Simple Servlet");
+    
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        response.setContentType("text/plain");
+        response.setStatus(200);
+        response.getWriter().write("Hello from Simple Servlet");
     }
 
+    @Override
     public String getServletInfo() {
         return "SimpleHelloServlet";
     }

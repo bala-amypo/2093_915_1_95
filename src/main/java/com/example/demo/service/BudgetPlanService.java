@@ -3,8 +3,5 @@ package com.example.demo.service;
 import com.example.demo.model.BudgetPlan;
 
 public interface BudgetPlanService {
-
-    BudgetPlan createOrUpdate(BudgetPlan budgetPlan);
-
-    BudgetPlan getPlan(int month, int year);
+    BudgetPlan createBudgetPlan(Long userId, BudgetPlan budgetPlan);
 }

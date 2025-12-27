@@ -1,33 +1,34 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.TransactionLog;
+import com.example.demo.model.User;
 import com.example.demo.repository.TransactionLogRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.TransactionService;
-
-import java.time.LocalDate;
 import java.util.List;
 
 public class TransactionServiceImpl implements TransactionService {
+    private final TransactionLogRepository transactionLogRepository;
+    private final UserRepository userRepository;
 
-    private final TransactionLogRepository repository;
-
-    public TransactionServiceImpl(TransactionLogRepository repository) {
-        this.repository = repository;
+    public TransactionServiceImpl(TransactionLogRepository transactionLogRepository, UserRepository userRepository) {
+        this.transactionLogRepository = transactionLogRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public TransactionLog addTransaction(Long userId, TransactionLog transactionLog) {
-        transactionLog.setUserId(userId);   // ✅ now exists
-        return repository.save(transactionLog);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+        transactionLog.setUser(user);
+        return transactionLogRepository.save(transactionLog);
     }
 
     @Override
-    public List<TransactionLog> getAllTransactions() {
-        return repository.findAll();
-    }
-
-    @Override
-    public List<TransactionLog> getTransactionsBetween(LocalDate start, LocalDate end) {
-        return repository.findByTransactionDateBetween(start, end);
+    public List<TransactionLog> getUserTransactions(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+        return transactionLogRepository.findByUser(user);
     }
 }
