@@ -6,7 +6,7 @@ public class BudgetSummary {
     public static final String STATUS_UNDER_LIMIT = "UNDER_LIMIT";
     public static final String STATUS_OVER_LIMIT = "OVER_LIMIT";
 
-    @Id
+    
     private Long id;
     private BudgetPlan budgetPlan;
     private Double actualIncome;
