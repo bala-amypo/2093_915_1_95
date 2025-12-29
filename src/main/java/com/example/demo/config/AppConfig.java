@@ -19,7 +19,7 @@ public class AppConfig {
     @Bean
     public UserService userService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return new UserServiceImpl(userRepository, passwordEncoder);
-    }~
+    }
     @Bean
     public CategoryService categoryService(CategoryRepository categoryRepository) {
         return new CategoryServiceImpl(categoryRepository);
