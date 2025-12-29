@@ -1,44 +1,38 @@
 package com.example.demo.config;
 
-import com.example.demo.repository.*;
-import com.example.demo.security.JwtTokenProvider;
-import com.example.demo.service.*;
-import com.example.demo.service.impl.*;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.Components;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
 
 @Configuration
-public class AppConfig {
+public class OpenApiConfig {
 
     @Bean
-    public JwtTokenProvider jwtTokenProvider() {
-        return new JwtTokenProvider("MySuperSecretJwtKeyForBudgetPlanner123456", 3600000L);
-    }
-
-    @Bean
-    public UserService userService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return new UserServiceImpl(userRepository, passwordEncoder);
-    }
-    @Bean
-    public CategoryService categoryService(CategoryRepository categoryRepository) {
-        return new CategoryServiceImpl(categoryRepository);
-    }
-
-    @Bean
-    public TransactionService transactionService(TransactionLogRepository transactionLogRepository, UserRepository userRepository) {
-        return new TransactionServiceImpl(transactionLogRepository, userRepository);
-    }
-
-    @Bean
-    public BudgetPlanService budgetPlanService(BudgetPlanRepository budgetPlanRepository, UserRepository userRepository) {
-        return new BudgetPlanServiceImpl(budgetPlanRepository, userRepository);
-    }
-
-    @Bean
-    public BudgetSummaryService budgetSummaryService(BudgetSummaryRepository budgetSummaryRepository, 
-                                                   BudgetPlanRepository budgetPlanRepository,
-                                                   TransactionLogRepository transactionLogRepository) {
-        return new BudgetSummaryServiceImpl(budgetSummaryRepository, budgetPlanRepository, transactionLogRepository);
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Expense Tracker API")
+                        .version("1.0")
+                        .description("API documentation for Expense Tracker"))
+                .servers(List.of(
+                        new Server().url("https://9046.408procr.amypo.ai/")
+                ))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .name("Authorization")
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                        )
+                );
     }
 }
